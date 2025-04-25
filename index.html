@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KU StudyHub - Under Maintenance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #000;
+            --secondary: #333;
+            --accent: #555;
+            --text: #f5f5f5;
+            --background: #111;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        
+        #canvas {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .maintenance-container {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            width: 90%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem 0; 
+        }
+        
+        .maintenance-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent
+            );
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+        }
+        
+        .maintenance-icon {
+            font-size: 4rem;
+            margin: 1.5rem 0;
+            animation: float 3s ease-in-out infinite;
+            color: #fff;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            animation: progress 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes progress {
+            0% { width: 15%; }
+            100% { width: 85%; }
+        }
+        
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.05) 50%, 
+                transparent 100%);
+            z-index: -1;
+            animation: shine 3s linear infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .contact-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .email-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .social-link:hover {
+            background-color: #fff;
+            color: var(--primary);
+            transform: translateY(-3px) scale(1.1);
+        }
+        
+        .countdown {
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .countdown-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .maintenance-container {
+                padding: 2rem;
+                width: 95%;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .maintenance-icon {
+                font-size: 3rem;
+            }
+            
+            .countdown-number {
+                font-size: 1.5rem;
+                min-width: 50px;
+            }
+            
+            .countdown-label {
+                font-size: 0.7rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .stat-icon {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .maintenance-container {
+                padding: 1.5rem;
+            }
+            
+            .countdown {
+                gap: 0.5rem;
+            }
+            
+            .countdown-number {
+                font-size: 1.2rem;
+                min-width: 40px;
+            }
+            
+            .countdown-label {
+                font-size: 0.6rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    
+    <div class="maintenance-container">
+        <div class="logo">Maintenance Page</div>
+        <div class="maintenance-icon">
+            <i class="fas fa-tools"></i>
+        </div>
+        
+        <h1>We're Under Maintenance</h1>
+        <p>We're currently working on updates to bring you an even better experience. We'll be back online soon with exciting new features!</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <p>Sorry for any inconvenience. We're working hard to improve and will be back better than ever!</p>
+        
+                
+        <div class="contact-section">
+            <h3 class="contact-title">Need to reach us?</h3>
+            <p>If you have any questions or need assistance during this time, feel free to contact us.</p>
+            <a href="mailto:beamersunflower@gmail.com" class="email-link">
+                <i class="fas fa-envelope"></i> maintenancesupport@gmail.com
+            </a>
+            
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fractal Background
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        let mouseX = 0, mouseY = 0;
+        let clickPoints = [];
+        let lastClickTime = 0;
+        const clickCooldown = 100;
+        const maxClickPoints = 10; 
+        
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            
+            createParticles();
+        }
+        
+        // Create particles
+        function createParticles() {
+            particles = [];
+            const particleCount = Math.floor(width * height / 10000);
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 2 + 1,
+                    speedX: Math.random() * 1 - 0.5,
+                    speedY: Math.random() * 1 - 0.5,
+                    color: `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.1})`
+                });
+            }
+        }
+        
+        function drawParticles() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw fractal patterns from click points
+            drawFractals();
+            
+            // Draw particles
+            particles.forEach(particle => {
+                ctx.fillStyle = particle.color;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Update position
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                
+                // Mouse influence
+                const dx = mouseX - particle.x;
+                const dy = mouseY - particle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = (100 - distance) / 500;
+                    particle.speedX += Math.cos(angle) * force;
+                    particle.speedY += Math.sin(angle) * force;
+                }
+                
+                // Boundary check
+                if (particle.x < 0 || particle.x > width) particle.speedX *= -1;
+                if (particle.y < 0 || particle.y > height) particle.speedY *= -1;
+                
+                // Damping
+                particle.speedX *= 0.99;
+                particle.speedY *= 0.99;
+                
+                // Connect nearby particles
+                particles.forEach(otherParticle => {
+                    const dx = particle.x - otherParticle.x;
+                    const dy = particle.y - otherParticle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - distance / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particle.x, particle.y);
+                        ctx.lineTo(otherParticle.x, otherParticle.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+            
+            requestAnimationFrame(drawParticles);
+        }
+        
+        function drawFractals() {
+            // Limit the number of active fractal patterns
+            if (clickPoints.length > maxClickPoints) {
+                clickPoints = clickPoints.slice(-maxClickPoints);
+            }
+            
+            clickPoints.forEach((point, index) => {
+                const age = Date.now() - point.time;
+                const maxAge = 5000; // 5 seconds
+                
+                if (age > maxAge) {
+                    clickPoints.splice(index, 1);
+                    return;
+                }
+                
+                const progress = age / maxAge;
+                const size = point.size * (1 - progress);
+                const opacity = 0.5 * (1 - progress);
+                
+                drawJuliaSet(point.x, point.y, size, opacity, point.complexity);
+            });
+        }
+        
+        // Draw a simplified Julia set fractal
+        function drawJuliaSet(centerX, centerY, size, opacity, complexity) {
+            const iterations = 5 + Math.floor(complexity * 5);
+            const zoom = size / 200;
+            
+            for (let i = 0; i < 500; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * size;
+                
+                let x = Math.cos(angle) * radius;
+                let y = Math.sin(angle) * radius;
+                let zx = x * zoom;
+                let zy = y * zoom;
+                
+                let n = 0;
+                while (n < iterations && zx * zx + zy * zy < 4) {
+                    const xtemp = zx * zx - zy * zy + complexity * 0.5 - 0.5;
+                    zy = 2 * zx * zy + complexity * 0.5 - 0.5;
+                    zx = xtemp;
+                    n++;
+                }
+                
+                if (n === iterations) continue;
+                
+                const colorIntensity = n / iterations;
+                ctx.fillStyle = `rgba(255, 255, 255, ${colorIntensity * opacity})`;
+                ctx.beginPath();
+                ctx.arc(centerX + x, centerY + y, 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function trackMouse(e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        }
+        
+        function handleClick(e) {
+            const now = Date.now();
+            
+            //  to prevent rapid clicking
+            if (now - lastClickTime < clickCooldown) {
+                return;
+            }
+            
+            lastClickTime = now;
+            
+            clickPoints.push({
+                x: e.clientX,
+                y: e.clientY,
+                size: Math.random() * 100 + 100,
+                time: now,
+                complexity: Math.random()
+            });
+            
+            for (let i = 0; i < 10; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                
+                particles.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    size: Math.random() * 3 + 2,
+                    speedX: Math.cos(angle) * speed,
+                    speedY: Math.sin(angle) * speed,
+                    color: `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.2})`
+                });
+            }
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', trackMouse);
+        window.addEventListener('click', handleClick);
+        
+        resizeCanvas();
+        drawParticles();
+
+        //Countdown,change date to your start date
+        function updateCountdown() {
+            const countDownDate = new Date('January 01, 2025 00:00:00').getTime() + (365 * 24 * 60 * 60 * 1000); // 365 days from January 01, 2025
+            
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                
+                const distance = countDownDate - now;
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+                document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+                
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("days").innerHTML = "00";
+                    document.getElementById("hours").innerHTML = "00";
+                    document.getElementById("minutes").innerHTML = "00";
+                    document.getElementById("seconds").innerHTML = "00";
+                }
+            }, 1000);
+        }
+        
+        // Animate counting up for statistics
+        function animateStats() {
+            const statElements = document.querySelectorAll('.stat-number');
+            
+            const options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        const targetValue = parseInt(element.getAttribute('data-count'));
+                        const duration = 2500; // 2.5 seconds
+                        const startTime = performance.now();
+                        
+                        function updateCount(currentTime) {
+                            const elapsedTime = currentTime - startTime;
+                            const progress = Math.min(elapsedTime / duration, 1);
+                            
+                            // Easing function for smoother animation
+                            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                            
+                            const currentCount = Math.floor(targetValue * easeOutQuart);
+                            element.textContent = currentCount.toLocaleString();
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(updateCount);
+                            } else {
+                                element.textContent = targetValue.toLocaleString();
+                                element.classList.add('animated');
+                            }
+                        }
+                        
+                        requestAnimationFrame(updateCount);
+                        observer.unobserve(element);
+                    }
+                });
+            }, options);
+            
+            statElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        updateCountdown();
+        
+        // Start animating stats when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(animateStats, 500);
+        });
+    </script>
+</body>
+</html>
