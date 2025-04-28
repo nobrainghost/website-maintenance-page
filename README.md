@@ -4,7 +4,7 @@ A simple, fully responsive HTML, CSS, and JavaScript page for websites under mai
 - A countdown timer
 - A Julia fractal background
 
-All files are bundled into one for an extremely simplified, one-click deploy.
+All files are bundled into one index.html for an extremely simplified, one-click deploy as a static page.
 
 ## Features
 - **Responsive Design**: Works seamlessly on all devices.
